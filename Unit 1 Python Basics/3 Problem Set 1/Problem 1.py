@@ -7,7 +7,7 @@ Number of vowels: 5
 
 '''
 
-s = 'azcbobobegghakl' #Don't incluse this in the problem set ide.
+s = 'azcbobobegghakl' #Don't include this in the problem set ide.
 num_vowels = 0
 for x in s:
     if (x=='a' or x=='e' or x=='i' or x=='o' or x=='u'):
