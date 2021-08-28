@@ -12,17 +12,27 @@ Longest substring in alphabetical order is: abc
 
 s = 'azcbobobegghakl'
 
-long = ''
-substring = ''
+#create an empty string to hold substrings
+# iterate over the string
+#Compare neighbours
+# if neighbour 1 < neighbour 2, then they are in alphabetical order
+#store value
+# is your current substring longer than the previous ones?
+# if not in order, there is no alphabetical substring.
+
+
+empty_sub = ''
+long_string = ''
 
 for x in range(len(s)):
-    if x==0:
-        substring = s[x]
+    if x == 0:
+        empty_sub = s[x]
     elif s[x] >= s[x-1]:
-        substring+= s[x]
+        empty_sub+= s[x]
     else:
-        substring = s[x]
-    
-    if len(substring) > len(long):
-        long = substring
-print('Longest substring in alphabetical order is:',long)
+        empty_sub = s[x]
+        
+    if len(empty_sub) > len(long_string):
+        long_string = empty_sub
+
+print('Longest substring in alphabetical order is:',long_string)     
