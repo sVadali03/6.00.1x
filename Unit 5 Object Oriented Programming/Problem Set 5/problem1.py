@@ -1,3 +1,4 @@
+'''
 Problem 1 - Build the Shift Dictionary and Apply Shift
 20/20 points (graded)
 The Message class contains methods that could be used to apply a cipher to a string, either to encrypt or to decrypt a message (since for Caesar codes this is the same action).
@@ -23,3 +24,99 @@ A reminder from the introduction page - characters such as the space character, 
 Fill in the apply_shift(self, shift) method of the Message class. You may find it easier to use build_shift_dict(self, shift). Remember that spaces and punctuation should not be changed by the cipher.
 
 Paste your implementation of the Message class in the box below.
+'''
+class Message(object):
+    ### DO NOT MODIFY THIS METHOD ###
+    def __init__(self, text):
+        '''
+        Initializes a Message object
+                
+        text (string): the message's text
+        a Message object has two attributes:
+            self.message_text (string, determined by input text)
+            self.valid_words (list, determined using helper function load_words
+        '''
+        self.message_text = text
+        self.valid_words = load_words(WORDLIST_FILENAME)
+
+    ### DO NOT MODIFY THIS METHOD ###
+    def get_message_text(self):
+        '''
+        Used to safely access self.message_text outside of the class
+        
+        Returns: self.message_text
+        '''
+        return self.message_text
+
+    ### DO NOT MODIFY THIS METHOD ###
+    def get_valid_words(self):
+        '''
+        Used to safely access a copy of self.valid_words outside of the class
+        
+        Returns: a COPY of self.valid_words
+        '''
+        return self.valid_words[:]
+        
+    def build_shift_dict(self, shift):
+        '''
+        Creates a dictionary that can be used to apply a cipher to a letter.
+        The dictionary maps every uppercase and lowercase letter to a
+        character shifted down the alphabet by the input shift. The dictionary
+        should have 52 keys of all the uppercase letters and all the lowercase
+        letters only.        
+        
+        shift (integer): the amount by which to shift every letter of the 
+        alphabet. 0 <= shift < 26
+        Returns: a dictionary mapping a letter (string) to 
+                 another letter (string). 
+        '''
+        plaintext_list_lowercase = []
+        plaintext_list_uppercase = []
+        ciphertext_list_lowercase = []
+        ciphertext_list_uppercase = []
+
+        for let in string.ascii_lowercase:
+            plaintext_list_lowercase.append(let)
+
+        for ter in string.ascii_uppercase:
+            plaintext_list_uppercase.append(ter)
+
+        for i in range(0, 26 - shift):
+            ciphertext_list_lowercase.append(plaintext_list_lowercase[i + shift])
+            ciphertext_list_uppercase.append(plaintext_list_uppercase[i + shift])
+
+        for j in range(-shift, 0):
+            ciphertext_list_lowercase.append(plaintext_list_lowercase[j + shift])
+            ciphertext_list_uppercase.append(plaintext_list_uppercase[j + shift])
+
+        plaintext_list = plaintext_list_lowercase + plaintext_list_uppercase
+        ciphertext_list = ciphertext_list_lowercase + ciphertext_list_uppercase
+
+        self.shift_dict = dict(zip(plaintext_list, ciphertext_list))
+
+        return self.shift_dict
+
+    def apply_shift(self, shift):
+        '''
+        Applies the Caesar Cipher to self.message_text with the input shift.
+        Creates a new string that is self.message_text shifted down the
+        alphabet by some number of characters determined by the input shift        
+        
+        shift (integer): the shift with which to encrypt the message.
+        0 <= shift < 26
+        Returns: the message text (string) in which every character is shifted
+             down the alphabet by the input shift
+        '''
+        self.shift_string = ""
+        original_string = self.get_message_text()
+        shift_dict = self.build_shift_dict(shift)
+
+        for letter in original_string:
+            if letter not in string.punctuation and letter not in string.digits and letter != " ":
+                for key in self.shift_dict.keys():
+                    if letter == key:
+                        self.shift_string += shift_dict[key]
+            else:
+                self.shift_string += letter
+
+        return self.shift_string
